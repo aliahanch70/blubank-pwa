@@ -3,7 +3,7 @@ import { IconBack, IconHelp, IconShare, IconDownload } from './Icons'
 
 const avatar = 'SC.webp'
 const fa = (s: string) => s.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d])
-const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(!=\d))/g, ','))
 
 const weekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
 const months = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند']
@@ -29,8 +29,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
   const docNum = fa(String(Date.now()).slice(-10))
 
   return (
-    // تغییر: h-screen و overflow-hidden برای جلوگیری از هرگونه اسکرول در کل صفحه
-    <div className="flex flex-col h-screen max-h-screen bg-white p-5 overflow-hidden justify-between select-none">
+    <div className="flex flex-col h-screen max-h-screen bg-white p-5 overflow-hidden select-none">
       
       {/* Header */}
       <header className="flex items-center justify-between mb-4 shrink-0">
@@ -42,7 +41,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
       {/* Recipient */}
       <section className="flex flex-col items-center text-center mb-3 shrink-0">
         <div className="relative mb-2">
-          <div className="w-[75px] h-[75px] mobile-m:w-[85px] mobile-m:h-[85px] rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#B2D6FF] flex items-center justify-center overflow-hidden">
+          <div className="w-[75px] h-[75px] rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#B2D6FF] flex items-center justify-center overflow-hidden">
             <img src={avatar} alt="" className="w-full h-full object-cover" />
           </div>
           {dest.badge && (
@@ -57,7 +56,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
 
       {/* Amount & Status */}
       <div className="text-center mb-3 shrink-0">
-        <div className="text-[28px] mobile-m:text-[32px] font-medium text-[#2B3441]">{faComma(amount)} ریال</div>
+        <div className="text-[28px] font-medium text-[#2B3441]">{faComma(amount)} ریال</div>
         <div className="text-[13px] text-[#879FB1] mb-2">مبلغ انتقال</div>
         <div className="inline-flex items-center gap-1.5 bg-[#00A884] text-white px-[18px] py-1.5 rounded-[12px] text-[13px]">
           <div className="w-[20px] h-[20px] rounded-full flex items-center justify-center ml-1 bg-white text-[#00A884]">
@@ -69,45 +68,50 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
         </div>
       </div>
 
-      <hr className="border-t-[2px] border-dashed border-[#D2DEE8] w-full mb-3 shrink-0" />
+      <hr className="border-t-[2px] border-dashed border-[#D2DEE8] w-full mb-2 shrink-0" />
 
-      {/* Receipt Details — تغییر: flex-1 اجازه می‌دهد در فضای باقی‌مانده فشرده یا باز شود */}
-      <div className="flex flex-col w-full flex-1 justify-center min-h-0 py-1">
-        {[
-          ['زمان', date],
-          ['انتقال دهنده', 'علی آهنچیان'],
-          ['روش انتقال', 'بلو به بلو'],
-          ['سپرده مبدا', 'IR ۴۹ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۵۲۶ ۳۶۷۸ ۰۱'],
-          ['شماره سند', docNum],
-        ].map(([label, value], i) => (
-          <div key={i} className={`flex justify-between items-center py-2.5 mobile-m:py-3.5 ${i < 4 ? 'border-b border-[#F1F4F8]' : ''}`}>
-            <span className="text-[13px] mobile-m:text-[14px] text-[#879FB1]">{label}</span>
-            <span className={`text-[13px] mobile-m:text-[14px] font-medium text-[#2B3441] ${label === 'سپرده مبدا' ? 'direction-ltr text-[11px] mobile-m:text-[13px]' : ''}`}>{value}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Logo — تغییر: حذف mb-16 برای فیت شدن در صفحه */}
-      <div className="flex flex-col items-center my-auto py-2 shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="flex flex-col items-start">
-            <span className="text-[18px] font-medium text-[#4A5568] font-sans leading-tight">Transfer</span>
-            <span className="text-[12px] text-[#879FB1] font-sans">blubank.com</span>
-          </div>
-          <img src="/blo-icon.png" alt="" className="w-9" />
+      {/* Content Container — این بخش بقیه فضا را پر می‌کند و آیتم‌ها را فشرده نگه می‌دارد */}
+      <div className="flex flex-col flex-1 min-h-0 justify-between">
+        
+        {/* جزییات تراکنش — چسبیده به خط چین با فاصله کم (mt-1) */}
+        <div className="flex flex-col w-full mt-1">
+          {[
+            ['زمان', date],
+            ['انتقال دهنده', 'علی آهنچیان'],
+            ['روش انتقال', 'بلو به بلو'],
+            ['سپرده مبدا', 'IR ۴۹ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۵۲۶ ۳۶۷۸ ۰۱'],
+            ['شماره سند', docNum],
+          ].map(([label, value], i) => (
+            <div key={i} className={`flex justify-between items-center py-2.5 ${i < 4 ? 'border-b border-[#F1F4F8]' : ''}`}>
+              <span className="text-[14px] text-[#879FB1]">{label}</span>
+              <span className={`text-[14px] font-[400] text-[#2B3441] ${label === 'سپرده مبدا' ? 'direction-ltr text-[11px]' : ''}`}>{value}</span>
+            </div>
+          ))}
         </div>
-      </div>
 
-      {/* Bottom Buttons — تغییر: کاهش جزئی ارتفاع دکمه‌ها برای بالانس بهتر ظاهر صفحه */}
-      <div className="flex gap-[12px] w-full pt-2 shrink-0">
-        <button className="flex-1 h-[68px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[14px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
-          <IconShare size={18} />
-          <span>اشتراک‌گذاری</span>
-        </button>
-        <button className="flex-1 h-[68px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[14px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
-          <IconDownload size={18} />
-          <span>ذخیره در گالری</span>
-        </button>
+        {/* لوگو بلوبانک — حالا با فاصله کم (mt-4) دقیقا زیر جزییات قرار می‌گیرد */}
+        <div className="flex flex-col items-center mt-4 mb-auto py-2">
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col items-start">
+              <span className="text-[22px] font-medium text-[#4A5568] font-sans leading-tight">Transfer</span>
+              <span className="text-[14px] text-[#879FB1] font-sans">blubank.com</span>
+            </div>
+            <img src="/blo-icon.png" alt="" className="w-11" />
+          </div>
+        </div>
+
+        {/* دکمه‌های پایینی */}
+        <div className="flex gap-[12px] w-full pt-2 shrink-0">
+          <button className="flex-1 h-[68px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[14px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
+            <IconShare size={18} />
+            <span>اشتراک‌گذاری</span>
+          </button>
+          <button className="flex-1 h-[68px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[14px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
+            <IconDownload size={18} />
+            <span>ذخیره در گالری</span>
+          </button>
+        </div>
+
       </div>
     </div>
   )
