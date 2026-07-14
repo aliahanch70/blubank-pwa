@@ -39,7 +39,8 @@ export default function TransferAmountPage({ dest, amount, onAmountChange, onBac
   const tomanText = toTomanText(num)
 
   return (
-    <div className="flex flex-col h-full bg-white p-5">
+    // تغییر: تبدیل ارتفاع به min-h-screen یا h-screen برای چیدمان درست دکمه در پایین صفحه
+    <div className="flex flex-col min-h-screen bg-white p-5 pb-8">
       {/* Header */}
       <header className="flex items-center justify-between mb-[30px]">
         <div className="text-primary cursor-pointer" onClick={onBack}>
@@ -83,11 +84,11 @@ export default function TransferAmountPage({ dest, amount, onAmountChange, onBac
 
       {/* Toman equivalent */}
       {tomanText && (
-        <div className="text-center text-[13px] text-[#879FB1] mt-2">{tomanText}</div>
+        <div className="text-center text-[13px] text-[#879FB1] mt-2 mb-4">{tomanText}</div>
       )}
 
-      {/* Footer — fixed above keyboard */}
-      <div className="fixed bottom-0 inset-x-0 flex flex-col items-center gap-5 pb-5 pt-3 bg-white z-50 px-5">
+      {/* Footer — حالا به صورت داینامیک با کلاس mt-auto با کیبورد بالا و پایین می‌رود */}
+      <div className="mt-auto flex flex-col items-center gap-5 pt-3 bg-white w-full">
         <div className="flex items-center gap-2 text-[#879FB1] text-[15px] font-medium cursor-pointer">
           <span>انتقال خودکار</span>
           <IconCalendarCheck />
