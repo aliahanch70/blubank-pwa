@@ -7,20 +7,41 @@ import TransferMethodPage from './components/TransferMethodPage'
 import TransferConfirmPage from './components/TransferConfirmPage'
 import TransferReceiptPage from './components/TransferReceiptPage'
 import BottomNav from './components/BottomNav'
-import { TRANSACTIONS } from './data'
+import { TRANSACTIONS, type Transaction } from './data'
 
 type Page = 'home' | 'transfer' | 'amount' | 'method' | 'confirm' | 'receipt'
 type Dest = { name: string; account: string; badge: boolean; blue: boolean }
+
+const weekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
+const months = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند']
+function nowFa() {
+  const d = new Date()
+  const p = new Intl.DateTimeFormat('fa-IR', { hour: '2-digit', minute: '2-digit', hour12: false }).format(d)
+  const parts = new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d)
+  const get = (t: string) => parts.find(p => p.type === t)?.value ?? ''
+  const mi = parseInt(get('month').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())) - 1
+  return `${weekdays[d.getDay()]} ${get('day')} ${months[mi]} ${get('year')} ${p}`
+}
 
 export default function App() {
   const [tab, setTab] = useState('home')
   const [page, setPage] = useState<Page>('home')
   const [selectedDest, setSelectedDest] = useState<Dest | null>(null)
   const [amount, setAmount] = useState('')
+  const [txns, setTxns] = useState<Transaction[]>(TRANSACTIONS)
 
   const goHome = () => { setTab('home'); setPage('home'); setSelectedDest(null); setAmount('') }
   const goTransfer = () => { setTab('transfer'); setPage('transfer'); setSelectedDest(null); setAmount('') }
   const navigate = (t: string) => t === 'home' ? goHome() : goTransfer()
+
+  const confirmToReceipt = () => {
+    if (selectedDest && amount) {
+      const fa = (s: string) => s.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d])
+      const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
+      setTxns(prev => [{ id: String(Date.now()), title: `انتقال به ${selectedDest.name}`, date: nowFa(), amount: `${faComma(amount)} ریال`, iconKey: 'transfer' }, ...prev])
+    }
+    setPage('receipt')
+  }
 
   if (page === 'receipt' && selectedDest) {
     return (
@@ -33,7 +54,7 @@ export default function App() {
   if (page === 'confirm' && selectedDest) {
     return (
       <div className="flex flex-col h-full bg-white">
-        <TransferConfirmPage dest={selectedDest} amount={amount} onBack={() => setPage('method')} onConfirm={() => setPage('receipt')} />
+        <TransferConfirmPage dest={selectedDest} amount={amount} onBack={() => setPage('method')} onConfirm={confirmToReceipt} />
       </div>
     )
   }
@@ -66,7 +87,7 @@ export default function App() {
         <>
           <Header />
           <div className="flex-1 overflow-hidden bg-white rounded-t-[20px] relative z-10 -mt-5 shadow-sheet">
-            <TransactionList transactions={TRANSACTIONS} />
+            <TransactionList transactions={txns} />
           </div>
         </>
       ) : (

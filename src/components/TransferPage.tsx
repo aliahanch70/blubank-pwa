@@ -6,12 +6,12 @@ const  avatar2= '/D2.webp'
 interface Dest { name: string; account: string; badge: boolean; blue: boolean }
 
 const destinations: Dest[] = [
-  { name: 'رضا دیانت خواه', account: 'IR ۷۰ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۶۹۰۱ ۳۶۹۰ ۰۱', badge: true, blue: true },
+  { name: 'رضا دیانت خواه', account: 'IR - ۷۰ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۶۹۰۱ ۳۶۹۰ ۰۱', badge: true, blue: true },
   { name: 'کاج سبز سپهر آذین', account: '۶۲۲۱ ۰۶۱۲ ۵۹۹۵ ۲۱۰۱', badge: false, blue: false },
-  { name: 'محمد داداش خواه', account: 'IR ۵۲ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۱۷۳ ۵۵۷۶ ۰۱', badge: true, blue: true },
+  { name: 'محمد داداش خواه', account: 'IR - ۵۲ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۱۷۳ ۵۵۷۶ ۰۱', badge: true, blue: true },
   { name: 'لادن اسدی', account: '۶۰۳۷ ۶۹۸۱ ۳۵۴۲ ۴۴۹۲', badge: false, blue: false },
-  { name: 'یحیی برگردشتمیانی', account: 'IR ۹۵ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۴۹۹ ۹۴۶۵ ۰۱', badge: true, blue: true },
-  { name: 'برزگرد', account: 'IR ۱۲ ۳۴۵۶ ۷۸۹۰ ۱۲۳۴ ۵۶۷۸ ۹۰۱۲ ۳۴', badge: true, blue: true },
+  { name: 'یحیی برگردشتمیانی', account: 'IR - ۹۵ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۴۹۹ ۹۴۶۵ ۰۱', badge: true, blue: true },
+  { name: 'برزگرد', account: 'IR - ۱۲ ۳۴۵۶ ۷۸۹۰ ۱۲۳۴ ۵۶۷۸ ۹۰۱۲ ۳۴', badge: true, blue: true },
   { name: 'مهدی ابوالحسنی', account: '۵۰۲۲ ۲۹۱۰ ۴۴۳۲ ۵۵۶۱', badge: false, blue: false },
 ]
 

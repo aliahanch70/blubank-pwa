@@ -87,7 +87,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
             ['زمان', date],
             ['انتقال دهنده', 'علی آهنچیان'],
             ['روش انتقال', 'بلو به بلو'],
-            ['سپرده مبدا', 'IR ۴۹ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۵۲۶ ۳۶۷۸ ۰۱'],
+            ['سپرده مبدا', 'IR - ۴۹ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۵۲۶ ۳۶۷۸ ۰۱'],
             ['شماره سند', docNum],
           ].map(([label, value], i) => (
             <div key={i} className={`flex justify-between items-center py-3 ${i < 4 ? 'border-b border-[#F1F4F8]' : ''}`}>

@@ -27,6 +27,6 @@ for s in [192, 512]:
     make_icon(s).save("public/icons/icon-%d.png" % s, "PNG")
     print("Created public/icons/icon-%d.png" % s)
 
-with open("public/favicon.svg", "w", encoding="utf-8") as f:
+with open("public/favicon.ico", "w", encoding="utf-8") as f:
     f.write(make_svg())
-print("Created public/favicon.svg")
+print("Created public/favicon.ico")

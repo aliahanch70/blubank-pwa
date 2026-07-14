@@ -1,6 +1,7 @@
 import { IconBack, IconHelp, IconDropdown } from './Icons'
 
 const avatar = '/SC.webp'
+const blue = 'Hb.webp'
 const fa = (s: string) => s.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d])
 const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
 
@@ -13,12 +14,16 @@ interface Props {
 
 export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }: Props) {
   return (
-    <div className="flex flex-col h-full bg-white p-5">
-      {/* Header */}
+    <div className="flex flex-col h-full bg-white p-5 select-none" dir="rtl">
+      {/* Header — اصلاح موقعیت دکمه بازگشت به سمت چپ */}
       <header className="flex items-center justify-between mb-[25px]">
-        <div className="text-[#879FB1] cursor-pointer"><IconHelp /></div>
+        <div className="text-primary cursor-pointer" onClick={onBack}>
+          <IconBack />
+        </div>
         <div className="text-[18px] font-bold text-[#2B3441]">انتقال</div>
-        <div className="text-primary cursor-pointer" onClick={onBack}><IconBack /></div>
+        <div className="text-[#879FB1] cursor-pointer">
+          <IconHelp />
+        </div>
       </header>
 
       {/* Recipient */}
@@ -47,21 +52,31 @@ export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }:
       <div className="h-px bg-[#F1F4F8] w-full mb-[25px]" />
 
       {/* Source account */}
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-2.5 w-full " >
         <span className="text-[15px] font-bold text-[#2B3441] pr-[2px]">انتقال از</span>
-        <div className="flex items-center justify-between bg-[#EFF5FC] rounded-2xl p-4 cursor-pointer">
-          <div className="text-primary">
-            <IconDropdown size={24} />
+
+        {/* تغییر: کلاس direction-ltr از این دیو حذف شد تا چیدمان راست‌به‌چپ (RTL) به درستی اعمال شود */}
+        <div style={{direction:'ltr'}} className="flex items-center justify-between bg-[#EFF5FC] rounded-[18px] p-4 cursor-pointer h-[76px] w-full">
+
+          {/* ۱. آیکون درپ‌داون در سمت چپ */}
+          <div className="text-[#3E8BFF] flex items-center justify-center pl-1">
+            <IconDropdown size={22} />
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex flex-col items-end gap-1">
-              <span className="text-[15px] font-bold text-[#2B3441]">حساب بلو</span>
-              <span className="text-[13px] text-[#879FB1]">قابل برداشت: ۳,۲۲۱,۳۹۸ ریال</span>
-            </div>
-            <div className="w-[45px] h-[45px] bg-primary rounded-full flex items-center justify-center text-white text-[24px] font-bold font-sans">
-              b
-            </div>
+
+          {/* ۲. بخش متن‌ها در وسط متمایل به راست */}
+          <div className="flex flex-col items-end gap-0.5 flex-1 pr-4">
+            <span className="text-[16px] font-bold text-[#2B3441]">حساب بلو</span>
+            <span className="text-[13px] text-[#5A7184] font-medium">
+              قابل برداشت: ۳,۲۲۱,۳۹۸ ریال
+            </span>
           </div>
+
+          {/* ۳. لوگوی رسمی و اختصاصی بلو در سمت راست */}
+          <div className="w-[48px] h-[48px] shrink-0 rounded-full flex items-center justify-center">
+                        <img src={blue} alt="" className="w-full h-full object-cover" />
+
+          </div>
+
         </div>
       </section>
 
@@ -69,7 +84,7 @@ export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }:
       <div className="mt-auto pb-2.5">
         <button
           onClick={onConfirm}
-          className="w-full h-[52px] bg-primary text-white border-none rounded-[14px] text-[16px] font-bold flex items-center justify-center cursor-pointer"
+          className="w-full h-[52px] bg-[#3E8BFF] text-white border-none rounded-[14px] text-[16px] font-bold flex items-center justify-center cursor-pointer"
           style={{ boxShadow: '0 4px 12px rgba(62,139,255,0.2)' }}
         >
           تایید و ادامه
