@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   IconHelp, 
   IconBell, 
@@ -31,16 +31,32 @@ interface Props {
 
 export default function DashboardPage({ transactions }: Props) {
   const [showBalance, setShowBalance] = useState(true)
-  
+  const [isLoading, setIsLoading] = useState(true) // تعریف وضعیت لودینگ برای لیست
+
   // معکوس کردن لیست برای نمایش از جدیدترین به قدیمی‌ترین
   const reversedTransactions = [...transactions].reverse()
+
+  useEffect(() => {
+    // پیدا کردن تگ متا و تغییر رنگ آن به آبی
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#003073')
+    }
+
+    // شبیه‌سازی لود شدن تراکنش‌ها (مثلاً بعد از ۱.۵ ثانیه)
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="flex flex-col h-screen max-h-screen bg-white overflow-hidden select-none" dir="rtl">
       
-      {/* ================= هدر آبی‌رنگ با گرادینت بالا ================= */}
+      {/* ================= هدر آبی‌رنگ با گرادینت بالا (ثابت و بدون پالس) ================= */}
       <header 
-        className="relative w-full  text-white shrink-0 pt-10" 
+        className="relative w-full text-white shrink-0 pt-10" 
         style={{ background: 'linear-gradient(2deg, rgb(3 50 121) 0%, rgb(29 107 221) 100%)' }}
       >
         {/* ردیف آیکون‌های بالایی */}
@@ -111,53 +127,72 @@ export default function DashboardPage({ transactions }: Props) {
 
         {/* لیست اصلی تراکنش‌ها */}
         <div className="px-5">
-          {reversedTransactions.map((tx) => {
-            const Icon = transactionIconMap[tx.iconKey]
-            const isDeposit = tx.iconKey === 'deposit'
+          {isLoading ? (
+            /* ================= اسکلتون لودینگ فقط برای بخش لیست تراکنش‌ها ================= */
+            <div className="animate-pulse flex flex-col gap-1">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="flex items-center justify-between py-[16px] ">
+                  <div className="flex items-center gap-[15px] flex-grow">
+                    {/* دایره آیکون فرضی */}
+                    <div className="w-[46px] h-[46px] rounded-full bg-[#c0c0c0] shrink-0" />
+                    {/* خطوط متن فرضی */}
+                    <div className="flex flex-col items-start gap-2">
+                      <div className="w-28 h-4 rounded bg-[#c0c0c0]" />
+                      <div className="w-16 h-3 rounded bg-[#c0c0c0]" />
+                    </div>
+                  </div>
+                  {/* باکس مبلغ فرضی */}
+                  <div className="w-20 h-5 rounded bg-[#c0c0c0] shrink-0" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* ================= نمایش لیست واقعی تراکنش‌ها پس از بارگذاری ================= */
+            reversedTransactions.map((tx) => {
+              const Icon = transactionIconMap[tx.iconKey]
+              const isDeposit = tx.iconKey === 'deposit'
 
-            return (
-              <div
-                key={tx.id}
-                className="flex items-center justify-between py-[16px] "
-              >
-                {/* بخش راست: آیکون و جزئیات */}
-                <div className="flex items-center gap-[15px] flex-grow">
-                  
-                  {/* دایره آیکون - اعمال رنگ پس‌زمینه و رنگ آیکون متفاوت برای واریز */}
+              return (
+                <div
+                  key={tx.id}
+                  className="flex items-center justify-between py-[16px] "
+                >
+                  {/* بخش راست: آیکون و جزئیات */}
+                  <div className="flex items-center gap-[15px] flex-grow">
+                    {/* دایره آیکون */}
+                    <div 
+                      className={`flex-shrink-0 w-[46px] h-[46px] rounded-full flex items-center justify-center transition-colors ${
+                        isDeposit 
+                          ? 'bg-[#E6F6F2] text-[#00A884]' 
+                          : 'bg-[#F1F3F7] text-[#879FB1]'
+                      }`}
+                    >
+                      <Icon size={20} />
+                    </div>
+
+                    {/* متون تراکنش */}
+                    <div className="flex flex-col items-start text-right">
+                      <div className="text-[15px] font-medium text-[#2B3441] mb-0.5">
+                        {tx.title}
+                      </div>
+                      <div className="text-[12px] text-[#879FB1] font-normal">
+                        {tx.date}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* بخش چپ: مبلغ */}
                   <div 
-                    className={`flex-shrink-0 w-[46px] h-[46px] rounded-full flex items-center justify-center transition-colors ${
-                      isDeposit 
-                        ? 'bg-[#E6F6F2] text-[#00A884]' 
-                        : 'bg-[#F1F3F7] text-[#879FB1]'
+                    className={`text-[16px]  whitespace-nowrap flex-shrink-0 direction-ltr transition-colors ${
+                      isDeposit ? 'bg-[#c8ede9]' : 'text-[#2B3441]'
                     }`}
                   >
-                    <Icon size={20} />
-                  </div>
-
-                  {/* متون تراکنش */}
-                  <div className="flex flex-col items-start text-right">
-                    <div className="text-[15px] font-medium text-[#2B3441] mb-0.5">
-                      {tx.title}
-                    </div>
-                    <div className="text-[12px] text-[#879FB1] font-normal">
-                      {tx.date}
-                    </div>
+                    {showBalance ? tx.amount : '• • • • •'}
                   </div>
                 </div>
-
-                {/* بخش چپ: مبلغ - اگر واریز باشد رنگ متن سبز می‌شود */}
-                <div 
-                  className={`text-[16px]  whitespace-nowrap flex-shrink-0 direction-ltr transition-colors ${
-                    isDeposit ? 'bg-[#c8ede9]' : 'text-[#2B3441]'
-                  }
-                  `}
-                >
-                  {showBalance ? tx.amount : '• • • • •'}
-                  
-                </div>
-              </div>
-            )
-          })}
+              )
+            })
+          )}
 
           {/* فاصله انتهایی برای اسکرول راحت‌تر */}
           <div className="h-20" />
