@@ -61,7 +61,7 @@ export default function TransferPage({ onSelect }: { onSelect: (d: Dest) => void
         </div>
 
         {destinations.map((dest, i) => (
-          <div key={i} className="flex items-center gap-[15px] py-4 border-b border-[#F1F4F8] cursor-pointer" onClick={() => onSelect(dest)}>
+          <div key={i} className="flex items-center gap-[15px] py-4 cursor-pointer" onClick={() => onSelect(dest)}>
             <div className="relative">
               <div className={`w-[52px] h-[52px] rounded-full flex items-center justify-center flex-shrink-0 ${
                 dest.blue

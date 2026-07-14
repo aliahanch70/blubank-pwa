@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import Header from './components/Header'
-import TransactionList from './components/TransactionList'
+import DashboardPage from './components/DashboardPage'
 import TransferPage from './components/TransferPage'
 import TransferAmountPage from './components/TransferAmountPage'
 import TransferMethodPage from './components/TransferMethodPage'
 import TransferConfirmPage from './components/TransferConfirmPage'
 import TransferReceiptPage from './components/TransferReceiptPage'
+import GridPage from './components/GridPage'
+import CardPage from './components/CardPage'
 import BottomNav from './components/BottomNav'
 import { TRANSACTIONS, type Transaction } from './data'
 
@@ -32,7 +33,12 @@ export default function App() {
 
   const goHome = () => { setTab('home'); setPage('home'); setSelectedDest(null); setAmount('') }
   const goTransfer = () => { setTab('transfer'); setPage('transfer'); setSelectedDest(null); setAmount('') }
-  const navigate = (t: string) => t === 'home' ? goHome() : goTransfer()
+  const navigate = (t: string) => {
+    if (t === 'home') goHome()
+    else if (t === 'grid') { setTab('grid'); setPage('home'); setSelectedDest(null); setAmount('') }
+    else if (t === 'card') { setTab('card'); setPage('home'); setSelectedDest(null); setAmount('') }
+    else goTransfer()
+  }
 
   const confirmToReceipt = () => {
     if (selectedDest && amount) {
@@ -81,13 +87,32 @@ export default function App() {
     )
   }
 
+  if (tab === 'grid' && page === 'home') {
+    return (
+      <div className="flex flex-col h-full bg-white">
+        <GridPage onNavigate={navigate} />
+        <BottomNav activeTab={tab} onNavigate={navigate} />
+
+      </div>
+    )
+  }
+
+  if (tab === 'card' && page === 'home') {
+    return (
+      <div className="flex flex-col h-full bg-white">
+        <CardPage onNavigate={navigate} />
+        <BottomNav activeTab={tab} onNavigate={navigate} />
+
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col h-full bg-[#F5F7FB]">
       {page === 'home' ? (
         <>
-          <Header />
           <div className="flex-1 overflow-hidden bg-white rounded-t-[20px] relative z-10 -mt-5 shadow-sheet">
-            <TransactionList transactions={txns} />
+            <DashboardPage transactions={txns} />
           </div>
         </>
       ) : (
