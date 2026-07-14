@@ -23,6 +23,7 @@ export default {
           'Tahoma',
           'system-ui',
           'sans-serif',
+          'centurygothic',
         ],
       },
       boxShadow: {

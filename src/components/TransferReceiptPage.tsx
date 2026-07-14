@@ -41,7 +41,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
       {/* Header */}
       <header className="flex items-center justify-between mb-4 shrink-0">
         <div className="text-primary cursor-pointer" onClick={onBack}><IconBack /></div>
-        <div className="text-[18px] font-medium text-[#2B3441]">رسید</div>
+        <div className="text-[16px] font-medium text-[#2B3441]">رسید</div>
         <div className="text-primary cursor-pointer"><IconHelp /></div>
       </header>
 
@@ -64,9 +64,9 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
       {/* Amount & Status */}
       <div className="text-center mb-10 shrink-0">
         {/* این بخش اکنون مبلغ را به همراه ویرگولِ جداکننده سه رقمی فارسی نشان می‌دهد */}
-        <div className="text-[26px] font-medium text-[#2B3441]">{faComma(amount)} ریال</div>
-        <div className="text-[14px] text-[#879FB1] mb-5">مبلغ انتقال</div>
-        <div className="inline-flex items-center gap-1.5 bg-[#00A884] text-white px-[18px] py-1.5 rounded-[12px] text-[13px]">
+        <div className="text-[28px] font-[600] text-[#2B3441]">{faComma(amount)} ریال</div>
+        <div className="text-[16px] text-[#879FB1] mb-5">مبلغ انتقال</div>
+        <div className="inline-flex items-center gap-1.5 bg-[#00A884] text-white px-[18px] py-1.5 rounded-[12px] text-[14px] font-light">
           <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center ml-1 bg-white text-[#00A884]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12" />
@@ -80,7 +80,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
 
       {/* Content Container */}
       <div className="flex flex-col flex-1 min-h-0 justify-between">
-        
+
         {/* جزییات تراکنش */}
         <div className="flex flex-col w-full mt-1">
           {[
@@ -90,7 +90,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
             ['سپرده مبدا', 'IR ۴۹ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۵۲۶ ۳۶۷۸ ۰۱'],
             ['شماره سند', docNum],
           ].map(([label, value], i) => (
-            <div key={i} className={`flex justify-between items-center py-2.5 ${i < 4 ? 'border-b border-[#F1F4F8]' : ''}`}>
+            <div key={i} className={`flex justify-between items-center py-3 ${i < 4 ? 'border-b border-[#F1F4F8]' : ''}`}>
               <span className="text-[16px] text-[#879FB1]">{label}</span>
               <span className={`text-[16px] font-[400] text-[#2B3441] ${label === 'سپرده مبدا' ? 'direction-ltr text-[16px]' : ''}`}>{value}</span>
             </div>
@@ -101,10 +101,10 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
         <div className="flex flex-col items-center mt-4 mb-auto py-2">
           <div className="flex items-center gap-2">
             <div className="flex flex-col items-start">
-              <span className="text-[22px] font-medium text-[#4A5568] font-sans leading-tight">Transfer</span>
-              <span className="text-[14px] text-[#879FB1] font-sans">blubank.com</span>
+              <span style={{ fontFamily: 'centurygothic'}} className=" text-[30px] font-[700] text-[#707c91] leading-tight">Transfer</span>
+              <span style={{ fontFamily: 'centurygothic'}}className="text-[16px] text-[#879FB1] font-sans text-left">blubank.com</span>
             </div>
-            <img src="/blo-icon.png" alt="" className="w-11" />
+            <img src="/blo-icon.png" alt="" className="w-12" />
           </div>
         </div>
 

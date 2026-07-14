@@ -37,7 +37,28 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'centurygothic';
+  src: url('/fonts/centurygothic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: bold;
+  font-display: swap;
+}
 
+@font-face {
+  font-family: 'centurygothic';
+  src: url('/fonts/centurygothic_bold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Trendex';
+  src: url('/fonts/Trendex-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: bold;
+  font-display: swap;
+}
 :root {
   --primary-blue: #3E8BFF;
   --secondary-blue: #64A3FF;
