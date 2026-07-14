@@ -10,7 +10,8 @@ export const BALANCE = '۸۵۰,۰۰۰,۰۰۰ ریال'
 
 export const TRANSACTIONS: Transaction[] = [
   { id: '1', title: 'انتقال به سپرده', date: 'یکشنبه ۲۴ اردیبهشت ۱۴۰۲ ۱۸:۴۶', amount: '۳۰۰,۰۰۰ ریال', iconKey: 'transfer' },
-  { id: '2', title: 'انتقال به سپرده', date: 'یکشنبه ۲۴ اردیبهشت ۱۴۰۲ ۱۸:۴۶', amount: '۳۰۰,۰۰۰ ریال', iconKey: 'deposit' },
+  { id: '2', title: 'دریافت پایا', date: 'یکشنبه ۲۱ تیر ۱۴۰۵ ۱۸:۴۶', amount: '۳,۰۰۰,۰۰۰ ریال', iconKey: 'transfer' },
+
   { id: '3', title: 'انتقال به سپرده', date: 'یکشنبه ۲۴ اردیبهشت ۱۴۰۲ ۱۸:۴۶', amount: '۳۰۰,۰۰۰ ریال', iconKey: 'transfer' },
   { id: '4', title: 'انتقال به سپرده', date: 'یکشنبه ۲۴ اردیبهشت ۱۴۰۲ ۱۸:۴۶', amount: '۳۰۰,۰۰۰ ریال', iconKey: 'transfer' },
   { id: '5', title: 'انتقال به سپرده', date: 'یکشنبه ۲۴ اردیبهشت ۱۴۰۲ ۱۸:۴۶', amount: '۳۰۰,۰۰۰ ریال', iconKey: 'deposit' },

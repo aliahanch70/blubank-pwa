@@ -32,7 +32,6 @@ export default function TransactionList({ transactions }: Props) {
             <div
               key={tx.id}
               className="flex items-center justify-between py-[15px]"
-              style={{ borderBottom: i < transactions.length - 1 ? '1px solid #EEEEEE' : 'none' }}
             >
               {/* Right: icon + details */}
               <div className="flex items-center gap-[15px] flex-grow">
@@ -43,7 +42,7 @@ export default function TransactionList({ transactions }: Props) {
 
                 {/* Text */}
                 <div className="flex flex-col items-start">
-                  <div className="text-[16px] font-medium text-[#333333] mb-1">
+                  <div className="text-[16px] font-[400] text-[#333333] mb-1">
                     {tx.title}
                   </div>
                   <div className="text-[12px] text-[#AAAAAA] text-left">
@@ -53,7 +52,7 @@ export default function TransactionList({ transactions }: Props) {
               </div>
 
               {/* Left: amount */}
-              <div className="text-[16px] font-medium text-[#333333] whitespace-nowrap flex-shrink-0">
+              <div className="text-[16px] font-[400] text-[#333333] whitespace-nowrap flex-shrink-0">
                 {tx.amount}
               </div>
             </div>

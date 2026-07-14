@@ -1,9 +1,11 @@
-import { IconHelp, IconCalendar, IconSearch, IconPersonFill } from './Icons'
+import { IconHelp, IconCalendar, IconSearch } from './Icons'
 
 const avatar = '/SC.webp'
 const  avatar2= '/D2.webp'
 
-const destinations = [
+interface Dest { name: string; account: string; badge: boolean; blue: boolean }
+
+const destinations: Dest[] = [
   { name: 'رضا دیانت خواه', account: 'IR ۷۰ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۶۹۰۱ ۳۶۹۰ ۰۱', badge: true, blue: true },
   { name: 'کاج سبز سپهر آذین', account: '۶۲۲۱ ۰۶۱۲ ۵۹۹۵ ۲۱۰۱', badge: false, blue: false },
   { name: 'محمد داداش خواه', account: 'IR ۵۲ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۱۷۳ ۵۵۷۶ ۰۱', badge: true, blue: true },
@@ -13,7 +15,7 @@ const destinations = [
   { name: 'مهدی ابوالحسنی', account: '۵۰۲۲ ۲۹۱۰ ۴۴۳۲ ۵۵۶۱', badge: false, blue: false },
 ]
 
-export default function TransferPage() {
+export default function TransferPage({ onSelect }: { onSelect: (d: Dest) => void }) {
   return (
     <div className="flex flex-col  h-full bg-white">
       {/* Header */}
@@ -59,7 +61,7 @@ export default function TransferPage() {
         </div>
 
         {destinations.map((dest, i) => (
-          <div key={i} className="flex items-center gap-[15px] py-4 border-b border-[#F1F4F8]">
+          <div key={i} className="flex items-center gap-[15px] py-4 border-b border-[#F1F4F8] cursor-pointer" onClick={() => onSelect(dest)}>
             <div className="relative">
               <div className={`w-[52px] h-[52px] rounded-full flex items-center justify-center flex-shrink-0 ${
                 dest.blue
