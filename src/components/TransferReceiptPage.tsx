@@ -26,10 +26,11 @@ function toPersianDate(d: Date) {
 interface Props {
   dest: { name: string; account: string; badge: boolean; blue: boolean }
   amount: string
+  sender: { name: string; sheba: string }
   onBack: () => void
 }
 
-export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
+export default function TransferReceiptPage({ dest, amount, sender, onBack }: Props) {
   const [date, setDate] = useState('')
   useEffect(() => setDate(toPersianDate(new Date())), [])
 
@@ -85,9 +86,9 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
         <div className="flex flex-col w-full mt-1">
           {[
             ['زمان', date],
-            ['انتقال دهنده', 'علی آهنچیان'],
+            ['انتقال دهنده', sender.name],
             ['روش انتقال', 'بلو به بلو'],
-            ['سپرده مبدا', 'IR - ۴۹ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۵۲۶ ۳۶۷۸ ۰۱'],
+            ['سپرده مبدا', sender.sheba],
             ['شماره سند', docNum],
           ].map(([label, value], i) => (
             <div key={i} className={`flex justify-between items-center py-3 ${i < 4 ? 'border-b border-[#F1F4F8]' : ''}`}>

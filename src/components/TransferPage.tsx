@@ -131,7 +131,7 @@ export default function TransferPage({ onSelect }: { onSelect: (d: Dest) => void
 
       {/* Add destination bottom-sheet */}
       {showForm && (
-        <div className="absolute inset-0 z-50 flex flex-col justify-end mb-20">
+        <div className="absolute inset-0 z-50 flex flex-col justify-end mb-32">
           {/* backdrop */}
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowForm(false)} />
           {/* sheet */}
@@ -155,7 +155,7 @@ export default function TransferPage({ onSelect }: { onSelect: (d: Dest) => void
                 type="text"
                 placeholder="شماره کارت یا شبا"
                 value={newAccount}
-                onChange={e => setNewAccount(e.target.value)}
+                onChange={e => setNewAccount(e.target.value.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d]))}
                 className="w-full border border-[#D8DCE2] rounded-xl px-4 py-3 text-[15px] text-[#2B3441] outline-none focus:border-primary direction-ltr text-left"
                 dir="ltr"
               />

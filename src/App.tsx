@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DashboardPage from './components/DashboardPage'
 import TransferPage from './components/TransferPage'
 import TransferAmountPage from './components/TransferAmountPage'
@@ -7,11 +7,14 @@ import TransferConfirmPage from './components/TransferConfirmPage'
 import TransferReceiptPage from './components/TransferReceiptPage'
 import GridPage from './components/GridPage'
 import CardPage from './components/CardPage'
+import ProfilePage from './components/ProfilePage'
 import BottomNav from './components/BottomNav'
 import DotLoading from './components/DotLoading'
 import { TRANSACTIONS, type Transaction } from './data'
+import { getTransactions, saveTransaction } from './services/transactionStorage'
+import { getProfile, type Profile } from './services/profileStorage'
 
-type Page = 'home' | 'transfer' | 'amount' | 'method' | 'confirm' | 'loading' | 'receipt'
+type Page = 'home' | 'transfer' | 'amount' | 'method' | 'confirm' | 'loading' | 'receipt' | 'viewReceipt'
 type Dest = { name: string; account: string; badge: boolean; blue: boolean }
 
 const weekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
@@ -30,18 +33,34 @@ export default function App() {
   const [page, setPage] = useState<Page>('home')
   const [selectedDest, setSelectedDest] = useState<Dest | null>(null)
   const [amount, setAmount] = useState('')
-  const [txns, setTxns] = useState<Transaction[]>(TRANSACTIONS)
-
-  // ponytail: loading + receipt slide state
+  const [txns, setTxns] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
+  const [viewTx, setViewTx] = useState<Transaction | null>(null)
+  const [profile, setProfile] = useState<Profile>(getProfile)
 
-  const goHome = () => { setTab('home'); setPage('home'); setSelectedDest(null); setAmount(''); setLoading(false); setShowReceipt(false) }
-  const goTransfer = () => { setTab('transfer'); setPage('transfer'); setSelectedDest(null); setAmount(''); setLoading(false); setShowReceipt(false) }
+  // Reload profile when tab switches to profile (user might have just saved)
+  useEffect(() => { setProfile(getProfile()) }, [tab])
+
+  useEffect(() => {
+    const stored = getTransactions()
+    if (stored.length > 0) {
+      const ids = new Set(stored.map(t => t.id))
+      const seeds = TRANSACTIONS.filter(t => !ids.has(t.id))
+      setTxns([...stored, ...seeds])
+    } else {
+      setTxns(TRANSACTIONS)
+    }
+  }, [])
+
+  const resetFlow = () => { setSelectedDest(null); setAmount(''); setLoading(false); setShowReceipt(false); setViewTx(null) }
+  const goHome = () => { setTab('home'); setPage('home'); resetFlow() }
+  const goTransfer = () => { setTab('transfer'); setPage('transfer'); resetFlow() }
   const navigate = (t: string) => {
     if (t === 'home') goHome()
-    else if (t === 'grid') { setTab('grid'); setPage('home'); setSelectedDest(null); setAmount('') }
-    else if (t === 'card') { setTab('card'); setPage('home'); setSelectedDest(null); setAmount('') }
+    else if (t === 'grid') { setTab('grid'); setPage('home'); resetFlow() }
+    else if (t === 'card') { setTab('card'); setPage('home'); resetFlow() }
+    else if (t === 'profile') { setTab('profile'); setPage('home'); resetFlow() }
     else goTransfer()
   }
 
@@ -49,12 +68,29 @@ export default function App() {
     if (selectedDest && amount) {
       const fa = (s: string) => s.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d])
       const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
-      setTxns(prev => [{ id: String(Date.now()), title: `انتقال به ${selectedDest.name}`, date: nowFa(), amount: `${faComma(amount)} ریال`, iconKey: 'transfer' }, ...prev])
+      const tx: Transaction = {
+        id: String(Date.now()),
+        title: `انتقال به ${selectedDest.name}`,
+        date: nowFa(),
+        amount: `${faComma(amount)} ریال`,
+        iconKey: 'transfer',
+        receipt: { dest: selectedDest, amount },
+      }
+      setTxns(prev => [tx, ...prev])
+      saveTransaction(tx)
     }
     setPage('loading')
     setLoading(true)
     setTimeout(() => { setLoading(false); setPage('receipt'); setShowReceipt(true) }, 2000)
   }
+
+  const viewReceipt = (tx: Transaction) => {
+    if (!tx.receipt) return
+    setViewTx(tx)
+    setPage('viewReceipt')
+  }
+
+  const senderInfo = { name: profile.senderName, sheba: profile.sheba }
 
   // Loading overlay
   if (page === 'loading') {
@@ -65,11 +101,18 @@ export default function App() {
     )
   }
 
-  // Receipt page with slide animation
   if (page === 'receipt' && selectedDest) {
     return (
       <div className={`flex flex-col h-full bg-white ${showReceipt ? 'slide-in-left' : ''}`}>
-        <TransferReceiptPage dest={selectedDest} amount={amount} onBack={goHome} />
+        <TransferReceiptPage dest={selectedDest} amount={amount} sender={senderInfo} onBack={goHome} />
+      </div>
+    )
+  }
+
+  if (page === 'viewReceipt' && viewTx?.receipt) {
+    return (
+      <div className="flex flex-col h-full bg-white slide-in-left">
+        <TransferReceiptPage dest={viewTx.receipt.dest} amount={viewTx.receipt.amount} sender={senderInfo} onBack={goHome} />
       </div>
     )
   }
@@ -109,7 +152,6 @@ export default function App() {
       <div className="flex flex-col h-full bg-white">
         <GridPage onNavigate={navigate} />
         <BottomNav activeTab={tab} onNavigate={navigate} />
-
       </div>
     )
   }
@@ -119,7 +161,15 @@ export default function App() {
       <div className="flex flex-col h-full bg-white">
         <CardPage onNavigate={navigate} />
         <BottomNav activeTab={tab} onNavigate={navigate} />
+      </div>
+    )
+  }
 
+  if (tab === 'profile' && page === 'home') {
+    return (
+      <div className="flex flex-col h-full bg-white">
+        <ProfilePage onNavigate={navigate} />
+        <BottomNav activeTab={tab} onNavigate={navigate} />
       </div>
     )
   }
@@ -129,7 +179,7 @@ export default function App() {
       {page === 'home' ? (
         <>
           <div className="flex-1 overflow-hidden bg-white rounded-t-[20px] relative z-10 -mt-5 shadow-sheet">
-            <DashboardPage transactions={txns} />
+            <DashboardPage transactions={txns} balance={profile.balance} onTxClick={viewReceipt} />
           </div>
         </>
       ) : (

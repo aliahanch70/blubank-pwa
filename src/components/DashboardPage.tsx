@@ -20,6 +20,7 @@ const transactionIconMap = {
 } as const
 
 interface Props {
+  balance?: string
   transactions: Transaction[]
   onTxClick?: (tx: Transaction) => void
 }
@@ -27,7 +28,7 @@ interface Props {
 
 const avatar = 'SC.webp'
 
-export default function DashboardPage({ transactions, onTxClick }: Props) {
+export default function DashboardPage({ transactions, onTxClick, balance }: Props) {
   const [showBalance, setShowBalance] = useState(true)
   const [isLoading, setIsLoading] = useState(true) // تعریف وضعیت لودینگ برای لیست
 
@@ -54,7 +55,7 @@ export default function DashboardPage({ transactions, onTxClick }: Props) {
       
       {/* ================= هدر آبی‌رنگ با گرادینت بالا (ثابت و بدون پالس) ================= */}
       <header 
-        className="relative w-full text-white shrink-0 pt-14" 
+        className="relative w-full text-white shrink-0 pt-14 pb-1" 
         style={{ background: 'linear-gradient(0deg , rgb(23 71 130) 0%,  rgb(46 120 215) 100%)' }}
       >
         {/* ردیف آیکون‌های بالایی */}
@@ -72,15 +73,15 @@ export default function DashboardPage({ transactions, onTxClick }: Props) {
         {/* بخش نمایش موجودی */}
         <div className="mt-6 mb-6 text-center">
           <div className="text-[32px] font-bold leading-none mb-3 transition-all duration-200">
-            {showBalance ? '۳۱,۲۲۱,۳۹۸ ریال' : '• • • • •'}
+            {showBalance ? ((balance ?? '۳۱,۲۲۱,۳۹۸') + ' ریال') : '• • • • •'}
           </div>
-          <div className="flex items-center justify-center gap-2 text-[14px] opacity-80">
+          <div className="flex items-center justify-center gap-2 text-[16px] opacity-80">
             <div className="cursor-pointer p-1" onClick={() => setShowBalance(!showBalance)}>
-              <IconEye />
+              <IconEye size={20}/>
             </div>
             <div>موجودی</div>
             <div className="cursor-pointer">
-              <IconDropdown />
+              <IconDropdown size={25}/>
             </div>
           </div>
         </div>
@@ -88,30 +89,30 @@ export default function DashboardPage({ transactions, onTxClick }: Props) {
         {/* دکمه‌های دسترسی سریع پایین هدر */}
         <div className="flex justify-around items-start text-center px-4 pb-8">
           <div className="flex flex-col items-center cursor-pointer group">
-            <div className="w-[62px] h-[62px] rounded-full flex items-center justify-center mb-2 bg-white text-[#1D6BDD] transition-transform group-hover:scale-105">
+            <div className="w-[75px] h-[75px] rounded-full flex items-center justify-center mb-2 bg-white text-[#1D6BDD] transition-transform group-hover:scale-105">
               <IconPlusFilled size={24} />
             </div>
-            <span className="text-[13px] font-medium opacity-90">شارژ حساب</span>
+            <span className="text-[16px] font-medium opacity-90">شارژ حساب</span>
           </div>
 
           <div className="flex flex-col items-center cursor-pointer group">
-            <div className="w-[62px] h-[62px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
+            <div className="w-[75px] h-[75px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
               <IconPulse size={28} />
             </div>
-            <span className="text-[13px] font-medium opacity-90">باکس</span>
+            <span className="text-[16px] font-medium opacity-90">باکس</span>
           </div>
 
           <div className="flex flex-col items-center cursor-pointer group">
-            <div className="w-[62px] h-[62px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
+            <div className="w-[75px] h-[75px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
               <IconReport size={28} />
             </div>
-            <span className="text-[13px] font-medium opacity-90">گزارش مالی</span>
+            <span className="text-[16px] font-medium opacity-90">گزارش مالی</span>
           </div>
         </div>
       </header>
 
       {/* ================= بخش لیست تراکنش‌ها ================= */}
-      <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-t-[1rem] -mt-4 relative z-10 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
+      <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-t-[1rem] -mt-2 relative z-10 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
         
         {/* نوار طوسی‌رنگ بالای لیست (Handle bar) */}
         <div className="flex justify-center pt-3 pb-1">
@@ -166,10 +167,10 @@ export default function DashboardPage({ transactions, onTxClick }: Props) {
 
                     {/* متون تراکنش */}
                     <div className="flex flex-col items-start text-right">
-                      <div className="text-[15px] font-medium text-[#2B3441] mb-0.5">
+                      <div className="text-[16px] font-medium text-[#2B3441] mb-0.5">
                         {tx.title}
                       </div>
-                      <div className="text-[12px] text-[#879FB1] font-normal">
+                      <div className="text-[14px] text-[#8798a5] font-normal">
                         {tx.date}
                       </div>
                     </div>
