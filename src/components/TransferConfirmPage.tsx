@@ -14,9 +14,9 @@ interface Props {
 
 export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }: Props) {
   return (
-    <div className="flex flex-col h-full bg-white p-5 select-none" dir="rtl">
+    <div className="flex flex-col h-full bg-white p-5 select-none" dir="rtl  mt-10">
       {/* Header — اصلاح موقعیت دکمه بازگشت به سمت چپ */}
-      <header className="flex items-center justify-between mb-[25px]">
+      <header className="flex items-center justify-between mb-[25px] mt-10">
         <div className="text-primary cursor-pointer" onClick={onBack}>
           <IconBack />
         </div>
@@ -67,7 +67,7 @@ export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }:
           <div className="flex flex-col items-end gap-0.5 flex-1 pr-4">
             <span className="text-[16px] font-bold text-[#2B3441]">حساب بلو</span>
             <span className="text-[13px] text-[#5A7184] font-medium">
-              قابل برداشت: ۳,۲۲۱,۳۹۸ ریال
+              قابل برداشت: ۳۱,۲۲۱,۳۹۸ ریال
             </span>
           </div>
 
@@ -81,7 +81,7 @@ export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }:
       </section>
 
       {/* Footer button */}
-      <div className="mt-auto pb-2.5">
+      <div className="mt-auto pb-2.5 mb-10">
         <button
           onClick={onConfirm}
           className="w-full h-[52px] bg-[#3E8BFF] text-white border-none rounded-[14px] text-[16px] font-bold flex items-center justify-center cursor-pointer"

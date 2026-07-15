@@ -36,7 +36,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
   const docNum = fa(String(Date.now()).slice(-10))
 
   return (
-    <div className="flex flex-col h-screen max-h-screen bg-white p-5 overflow-hidden select-none">
+    <div className="flex flex-col h-screen max-h-screen bg-white my-10 p-5 overflow-hidden select-none">
       
       {/* Header */}
       <header className="flex items-center justify-between mb-4 shrink-0">
@@ -48,7 +48,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
       {/* Recipient */}
       <section className="flex flex-col items-center text-center mb-3 shrink-0">
         <div className="relative mb-2">
-          <div className="w-[75px] h-[75px] rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#B2D6FF] flex items-center justify-center overflow-hidden">
+          <div className="w-[70px] h-[70px] rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#B2D6FF] flex items-center justify-center overflow-hidden">
             <img src={avatar} alt="" className="w-full h-full object-cover" />
           </div>
           {dest.badge && (
@@ -66,7 +66,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
         {/* این بخش اکنون مبلغ را به همراه ویرگولِ جداکننده سه رقمی فارسی نشان می‌دهد */}
         <div className="text-[28px] font-[600] text-[#2B3441]">{faComma(amount)} ریال</div>
         <div className="text-[16px] text-[#879FB1] mb-5">مبلغ انتقال</div>
-        <div className="inline-flex items-center gap-1.5 bg-[#00A884] text-white px-[18px] py-1.5 rounded-[12px] text-[14px] font-light">
+        <div className="inline-flex items-center gap-1.5 bg-[#00A884] text-white px-[16px] py-1.5 rounded-[10px] text-[14px] font-light">
           <div className="w-[22px] h-[22px] rounded-full flex items-center justify-center ml-1 bg-white text-[#00A884]">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12" />
@@ -76,7 +76,7 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
         </div>
       </div>
 
-      <hr className="border-t-[2px] border-dashed border-[#D2DEE8] w-full mb-2 shrink-0" />
+      <hr className="border-t-[2px] border-dashed border-[#D2DEE8] w-full  shrink-0" />
 
       {/* Content Container */}
       <div className="flex flex-col flex-1 min-h-0 justify-between">
@@ -98,23 +98,23 @@ export default function TransferReceiptPage({ dest, amount, onBack }: Props) {
         </div>
 
         {/* لوگو بلوبانک */}
-        <div className="flex flex-col items-center mt-4 mb-auto py-2">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col items-center mt-1 mb-auto py-2">
+          <div className="flex items-center gap-1">
             <div className="flex flex-col items-start">
-              <span style={{ fontFamily: 'centurygothic'}} className=" text-[30px] font-[700] text-[#707c91] leading-tight">Transfer</span>
-              <span style={{ fontFamily: 'centurygothic'}}className="text-[16px] text-[#879FB1] font-sans text-left">blubank.com</span>
+              <span style={{ fontFamily: 'centurygothic'}} className=" text-[1.5rem] font-[700] text-[#707c91] leading-tight">Transfer</span>
+              <span style={{ fontFamily: 'centurygothic'}}className="text-[0.80rem] text-[#879FB1]  text-left">blubank.com</span>
             </div>
-            <img src="/blo-icon.png" alt="" className="w-12" />
+            <img src="/blo-icon.png" alt="" className="w-10" />
           </div>
         </div>
 
         {/* دکمه‌های پایینی */}
         <div className="flex gap-[12px] w-full pt-2 shrink-0">
-          <button className="flex-1 h-[85px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[16px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
+          <button className="flex-1 h-[75px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[16px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
             <IconShare size={20} />
             <span>اشتراک‌گذاری</span>
           </button>
-          <button className="flex-1 h-[85px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[16px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
+          <button className="flex-1 h-[75px] bg-[#F0F5FC] text-primary border-none rounded-xl text-[16px] font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer">
             <IconDownload size={20} />
             <span>ذخیره در گالری</span>
           </button>

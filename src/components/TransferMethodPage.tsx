@@ -53,7 +53,7 @@ interface Props {
 
 export default function TransferMethodPage({ onBack, onConfirm }: Props) {
   return (
-    <div className="flex flex-col h-full bg-white p-5">
+    <div className="flex flex-col h-full bg-white p-5 my-10">
       <header className="flex items-center justify-between mb-[30px]">
         <div className="text-primary cursor-pointer" onClick={onBack}><IconBack /></div>
 
@@ -73,9 +73,9 @@ export default function TransferMethodPage({ onBack, onConfirm }: Props) {
             <div
               key={i}
               onClick={opt.active ? onConfirm : undefined}
-              className={`flex items-center justify-between rounded-[14px] py-[15px] px-[18px] bg-white transition-colors ${opt.active
-                  ? 'border-[1.5px] border-[#4A90E2] shadow-[0_4px_12px_rgba(62,139,255,0.05)]'
-                  : 'border-[1.5px] border-[#E4EBF2]'
+              className={`flex items-center justify-between rounded-[14px] py-[0.5rem] px-[18px] bg-white transition-colors ${opt.active
+                  ? 'border-[2px] border-[#4A90E2] shadow-[0_4px_12px_rgba(62,139,255,0.05)]'
+                  : 'border-[2px] border-[#E4EBF2]'
                 }`}
             >
               <div className={`flex items-center ${opt.active ? 'text-primary' : 'text-[#C2D1E0]'}`}>
@@ -87,7 +87,7 @@ export default function TransferMethodPage({ onBack, onConfirm }: Props) {
                   <span className={`text-[15px] font-bold ${opt.active ? 'text-[#4A90E2]' : 'text-[#C2D1E0]'}`}>
                     {opt.title}
                   </span>
-                  <span className={`text-[12px] ${opt.active ? 'text-[#A3B8CC]' : 'text-[#C2D1E0]'}`}>
+                  <span className={`text-[12px] ${opt.active ? 'text-[#4A90E2]' : 'text-[#C2D1E0]'}`}>
                     {opt.sub}
                   </span>
                 </div>

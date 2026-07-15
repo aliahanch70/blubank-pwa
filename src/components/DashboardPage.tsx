@@ -11,6 +11,7 @@ import {
   IconTransfer,
   IconDeposit
 } from './Icons'
+import DotLoading from './DotLoading'
 
 export interface Transaction {
   id: string
@@ -28,6 +29,8 @@ const transactionIconMap = {
 interface Props {
   transactions: Transaction[]
 }
+
+const avatar = 'SC.webp'
 
 export default function DashboardPage({ transactions }: Props) {
   const [showBalance, setShowBalance] = useState(true)
@@ -56,30 +59,25 @@ export default function DashboardPage({ transactions }: Props) {
       
       {/* ================= هدر آبی‌رنگ با گرادینت بالا (ثابت و بدون پالس) ================= */}
       <header 
-        className="relative w-full text-white shrink-0 pt-10" 
-        style={{ background: 'linear-gradient(2deg, rgb(3 50 121) 0%, rgb(29 107 221) 100%)' }}
+        className="relative w-full text-white shrink-0 pt-14" 
+        style={{ background: 'linear-gradient(0deg , rgb(23 71 130) 0%,  rgb(46 120 215) 100%)' }}
       >
         {/* ردیف آیکون‌های بالایی */}
-        <div className="flex items-center justify-between px-5 pt-4 pb-0">
-          <div className="header-icon"></div>
-          
-          <div className="flex items-center gap-[15px]">
-            <div className="header-icon cursor-pointer opacity-90 hover:opacity-100">
-              <IconSearch />
-            </div>
-            <div className="header-icon cursor-pointer opacity-90 hover:opacity-100">
-              <IconBell />
-            </div>
-            <div className="header-icon cursor-pointer opacity-90 hover:opacity-100">
-              <IconHelp />
-            </div>
-          </div>
-        </div>
+       <div className="flex items-center flex-row-reverse justify-between px-5 pt-4 pb-3 ">
+               <div className="flex items-center gap-[18px] text-[#d7d7d7]">
+                 <span className="cursor-pointer"><IconHelp /></span>
+                 <span className="cursor-pointer"><IconBell /></span>
+                 <span className="cursor-pointer"><IconSearch /></span>
+               </div>
+               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#C4DEFF] border border-[#A3CFFF] flex items-center justify-center overflow-hidden">
+                 <img src={avatar} alt="" className="w-full h-full object-cover" />
+               </div>
+             </div>
 
         {/* بخش نمایش موجودی */}
         <div className="mt-6 mb-6 text-center">
           <div className="text-[32px] font-bold leading-none mb-3 transition-all duration-200">
-            {showBalance ? '۱۵,۰۲۲,۰۰۰ ریال' : '• • • • •'}
+            {showBalance ? '۳۱,۲۲۱,۳۹۸ ریال' : '• • • • •'}
           </div>
           <div className="flex items-center justify-center gap-2 text-[14px] opacity-80">
             <div className="cursor-pointer p-1" onClick={() => setShowBalance(!showBalance)}>
@@ -118,7 +116,7 @@ export default function DashboardPage({ transactions }: Props) {
       </header>
 
       {/* ================= بخش لیست تراکنش‌ها ================= */}
-      <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-t-[24px] -mt-4 relative z-10 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
+      <div className="flex-1 overflow-y-auto no-scrollbar bg-white rounded-t-[1rem] -mt-4 relative z-10 shadow-[0_-8px_20px_rgba(0,0,0,0.05)]">
         
         {/* نوار طوسی‌رنگ بالای لیست (Handle bar) */}
         <div className="flex justify-center pt-3 pb-1">

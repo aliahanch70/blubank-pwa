@@ -40,7 +40,7 @@ export default function TransferAmountPage({ dest, amount, onAmountChange, onBac
 
   return (
     // تغییر: تبدیل ارتفاع به min-h-screen یا h-screen برای چیدمان درست دکمه در پایین صفحه
-    <div className="flex flex-col min-h-screen bg-white p-5 pb-8">
+    <div className="flex flex-col min-h-screen bg-white p-5 pb-8  mt-10">
       {/* Header */}
       <header className="flex items-center justify-between mb-[30px]">
         <div className="text-primary cursor-pointer" onClick={onBack}>
@@ -67,16 +67,14 @@ export default function TransferAmountPage({ dest, amount, onAmountChange, onBac
         <h2 className="text-[17px] font-bold text-[#2B3441] mb-1.5">{dest.name}</h2>
         <p className="text-[13px] text-[#879FB1] direction-ltr">{dest.account}</p>
       </section>
-
       {/* Amount input */}
-      {/* Amount input */}
-      <div className="flex items-center border-2 border-[#5499FF] rounded-xl h-[58px] px-4 bg-white relative">
+      <div className="flex items-center border-2 border-[#5499FF] rounded-xl h-[58px] px-4 bg-[#e9e9e9] relative">
         <input
           type="tel"
           value={display}
           onChange={e => onAmountChange(e.target.value.replace(/[^0-۰-۹۱-۹]/g, '').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString()))}
           placeholder="مبلغ انتقال"
-          className="flex-1 border-none outline-none text-[24px] font-medium text-[#2B3441] text-center bg-transparent placeholder:text-center placeholder:text-[15px] placeholder:font-normal placeholder:text-[#879FB1]"
+          className="flex-1 border-none outline-none text-[24px] font-medium text-[#2b3441] text-center bg-transparent placeholder:text-center placeholder:text-[15px] placeholder:font-bold placeholder:text-[#5f717e]"
         />
         <div className="text-[15px] text-[#879FB1] font-bold border-r border-[#E2E8F0] pr-3 mr-1.5 shrink-0">
           ریال
@@ -97,7 +95,7 @@ export default function TransferAmountPage({ dest, amount, onAmountChange, onBac
         <button
           disabled={!active}
           onClick={active ? onContinue : undefined}
-          className={`w-full h-[52px] rounded-[14px] text-[16px] font-bold flex items-center justify-center transition-colors ${active
+          className={`w-full h-[52px] mb-16  rounded-[14px] text-[16px] font-bold flex items-center justify-center transition-colors ${active
               ? 'bg-[#3E8BFF] text-white cursor-pointer'
               : 'bg-[#C2D1E0] text-white cursor-not-allowed'
             }`}

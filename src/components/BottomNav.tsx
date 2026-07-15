@@ -16,10 +16,12 @@ interface Props {
 export default function BottomNav({ activeTab, onNavigate }: Props) {
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 bg-white h-[60px] flex items-center justify-around z-50 border-t border-[#EEEEEE]"
+      className="fixed bottom-0 left-0 right-0 bg-white flex flex-col z-50 border-t border-[#EEEEEE]"
+      style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       role="navigation"
       aria-label="منوی پایین"
     >
+      <div className="h-[60px] flex items-center justify-around w-full">
       {navItems.map(({ key, label, icon: Icon }) => {
         const active = activeTab === key
         return (
@@ -36,6 +38,7 @@ export default function BottomNav({ activeTab, onNavigate }: Props) {
           </button>
         )
       })}
+      </div>
     </nav>
   )
 }
