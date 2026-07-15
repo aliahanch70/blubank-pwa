@@ -8,9 +8,10 @@ import TransferReceiptPage from './components/TransferReceiptPage'
 import GridPage from './components/GridPage'
 import CardPage from './components/CardPage'
 import BottomNav from './components/BottomNav'
+import DotLoading from './components/DotLoading'
 import { TRANSACTIONS, type Transaction } from './data'
 
-type Page = 'home' | 'transfer' | 'amount' | 'method' | 'confirm' | 'receipt'
+type Page = 'home' | 'transfer' | 'amount' | 'method' | 'confirm' | 'loading' | 'receipt'
 type Dest = { name: string; account: string; badge: boolean; blue: boolean }
 
 const weekdays = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه']
@@ -31,8 +32,12 @@ export default function App() {
   const [amount, setAmount] = useState('')
   const [txns, setTxns] = useState<Transaction[]>(TRANSACTIONS)
 
-  const goHome = () => { setTab('home'); setPage('home'); setSelectedDest(null); setAmount('') }
-  const goTransfer = () => { setTab('transfer'); setPage('transfer'); setSelectedDest(null); setAmount('') }
+  // ponytail: loading + receipt slide state
+  const [loading, setLoading] = useState(false)
+  const [showReceipt, setShowReceipt] = useState(false)
+
+  const goHome = () => { setTab('home'); setPage('home'); setSelectedDest(null); setAmount(''); setLoading(false); setShowReceipt(false) }
+  const goTransfer = () => { setTab('transfer'); setPage('transfer'); setSelectedDest(null); setAmount(''); setLoading(false); setShowReceipt(false) }
   const navigate = (t: string) => {
     if (t === 'home') goHome()
     else if (t === 'grid') { setTab('grid'); setPage('home'); setSelectedDest(null); setAmount('') }
@@ -46,12 +51,24 @@ export default function App() {
       const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
       setTxns(prev => [{ id: String(Date.now()), title: `انتقال به ${selectedDest.name}`, date: nowFa(), amount: `${faComma(amount)} ریال`, iconKey: 'transfer' }, ...prev])
     }
-    setPage('receipt')
+    setPage('loading')
+    setLoading(true)
+    setTimeout(() => { setLoading(false); setPage('receipt'); setShowReceipt(true) }, 2000)
   }
 
+  // Loading overlay
+  if (page === 'loading') {
+    return (
+      <div className="flex flex-col h-full bg-white items-center justify-center">
+        <DotLoading />
+      </div>
+    )
+  }
+
+  // Receipt page with slide animation
   if (page === 'receipt' && selectedDest) {
     return (
-      <div className="flex flex-col h-full bg-white">
+      <div className={`flex flex-col h-full bg-white ${showReceipt ? 'slide-in-left' : ''}`}>
         <TransferReceiptPage dest={selectedDest} amount={amount} onBack={goHome} />
       </div>
     )
@@ -59,7 +76,7 @@ export default function App() {
 
   if (page === 'confirm' && selectedDest) {
     return (
-      <div className="flex flex-col h-full bg-white">
+      <div className="flex flex-col h-full bg-white slide-in-left">
         <TransferConfirmPage dest={selectedDest} amount={amount} onBack={() => setPage('method')} onConfirm={confirmToReceipt} />
       </div>
     )
@@ -67,7 +84,7 @@ export default function App() {
 
   if (page === 'method') {
     return (
-      <div className="flex flex-col h-full bg-white">
+      <div className="flex flex-col h-full bg-white slide-in-left">
         <TransferMethodPage onBack={() => setPage('amount')} onConfirm={() => setPage('confirm')} />
       </div>
     )
@@ -75,7 +92,7 @@ export default function App() {
 
   if (page === 'amount' && selectedDest) {
     return (
-      <div className="flex flex-col h-full bg-white">
+      <div className="flex flex-col h-full bg-white slide-in-left">
         <TransferAmountPage
           dest={selectedDest}
           amount={amount}

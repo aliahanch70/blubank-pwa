@@ -11,7 +11,6 @@ import {
   IconTransfer,
   IconDeposit
 } from './Icons'
-import DotLoading from './DotLoading'
 
 export interface Transaction {
   id: string
