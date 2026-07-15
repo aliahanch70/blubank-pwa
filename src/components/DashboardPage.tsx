@@ -12,13 +12,7 @@ import {
   IconDeposit
 } from './Icons'
 
-export interface Transaction {
-  id: string
-  title: string
-  date: string
-  amount: string
-  iconKey: 'transfer' | 'deposit'
-}
+import { type Transaction } from '../data'
 
 const transactionIconMap = {
   transfer: IconTransfer,
@@ -27,16 +21,18 @@ const transactionIconMap = {
 
 interface Props {
   transactions: Transaction[]
+  onTxClick?: (tx: Transaction) => void
 }
+
 
 const avatar = 'SC.webp'
 
-export default function DashboardPage({ transactions }: Props) {
+export default function DashboardPage({ transactions, onTxClick }: Props) {
   const [showBalance, setShowBalance] = useState(true)
   const [isLoading, setIsLoading] = useState(true) // تعریف وضعیت لودینگ برای لیست
 
-  // معکوس کردن لیست برای نمایش از جدیدترین به قدیمی‌ترین
-  const reversedTransactions = [...transactions].reverse()
+  // ponytail: data is already newest-first from saveTransaction/unshift
+  const displayTransactions = transactions
 
   useEffect(() => {
     // پیدا کردن تگ متا و تغییر رنگ آن به آبی
@@ -145,14 +141,15 @@ export default function DashboardPage({ transactions }: Props) {
             </div>
           ) : (
             /* ================= نمایش لیست واقعی تراکنش‌ها پس از بارگذاری ================= */
-            reversedTransactions.map((tx) => {
+            displayTransactions.map((tx) => {
               const Icon = transactionIconMap[tx.iconKey]
               const isDeposit = tx.iconKey === 'deposit'
 
               return (
                 <div
                   key={tx.id}
-                  className="flex items-center justify-between py-[16px] "
+                  className={`flex items-center justify-between py-[16px] ${tx.receipt ? 'cursor-pointer' : ''}`}
+                  onClick={() => tx.receipt && onTxClick?.(tx)}
                 >
                   {/* بخش راست: آیکون و جزئیات */}
                   <div className="flex items-center gap-[15px] flex-grow">
