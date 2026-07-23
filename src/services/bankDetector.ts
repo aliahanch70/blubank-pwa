@@ -122,8 +122,12 @@ const IBAN_BANKS: [string, BankInfo][] = [
 ]
 
 // Detect bank from card BIN (first 6 digits)
+function toLatin(s: string): string {
+  return s.replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
+}
+
 export function detectBankFromCard(cardNumber: string): BankInfo | null {
-  const digits = cardNumber.replace(/\D/g, '')
+  const digits = toLatin(cardNumber).replace(/\D/g, '')
   if (digits.length < 6) return null
   const bin = parseInt(digits.slice(0, 6))
   for (const [min, max, bank] of BIN_RANGES) {
@@ -134,8 +138,7 @@ export function detectBankFromCard(cardNumber: string): BankInfo | null {
 
 // Detect bank from IBAN
 export function detectBankFromIban(iban: string): BankInfo | null {
-  // IR format: IR + 2 check digits + 3 bank code + rest
-  const digits = iban.replace(/\D/g, '')
+  const digits = toLatin(iban).replace(/\D/g, '')
   if (digits.length < 5) return null
   const bankCode = digits.slice(4, 7)
   const match = IBAN_BANKS.find(([code]) => code === bankCode)

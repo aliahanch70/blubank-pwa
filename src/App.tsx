@@ -33,6 +33,17 @@ export default function App() {
   const [page, setPage] = useState<Page>('home')
   const [selectedDest, setSelectedDest] = useState<Dest | null>(null)
   const [amount, setAmount] = useState('')
+  const [method, setMethod] = useState('')
+
+  const [dests, setDests] = useState<Dest[]>([
+    { name: 'رضا دیانت خواه', account: 'IR - ۷۰ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۶۹۰۱ ۳۶۹۰ ۰۱', badge: true, blue: true },
+    { name: 'کاج سبز سپهر آذین', account: '۶۲۲۱ ۰۶۱۲ ۵۹۹۵ ۲۱۰۱', badge: false, blue: false },
+    { name: 'محمد داداش خواه', account: 'IR - ۵۲ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۱۷۳ ۵۵۷۶ ۰۱', badge: true, blue: true },
+    { name: 'لادن اسدی', account: '۶۰۳۷ ۶۹۸۱ ۳۵۴۲ ۴۴۹۲', badge: false, blue: false },
+    { name: 'یحیی برگردشتمیانی', account: 'IR - ۹۵ ۰۵۶۰ ۶۱۱۸ ۲۸۰۰ ۵۴۹۹ ۹۴۶۵ ۰۱', badge: true, blue: true },
+    { name: 'برزگرد', account: 'IR - ۱۲ ۳۴۵۶ ۷۸۹۰ ۱۲۳۴ ۵۶۷۸ ۹۰۱۲ ۳۴', badge: true, blue: true },
+    { name: 'مهدی ابوالحسنی', account: '۵۰۲۲ ۲۹۱۰ ۴۴۳۲ ۵۵۶۱', badge: false, blue: false },
+  ])
   const [txns, setTxns] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(false)
   const [showReceipt, setShowReceipt] = useState(false)
@@ -53,7 +64,7 @@ export default function App() {
     }
   }, [])
 
-  const resetFlow = () => { setSelectedDest(null); setAmount(''); setLoading(false); setShowReceipt(false); setViewTx(null) }
+  const resetFlow = () => { setSelectedDest(null); setAmount(''); setMethod(''); setLoading(false); setShowReceipt(false); setViewTx(null) }
   const goHome = () => { setTab('home'); setPage('home'); resetFlow() }
   const goTransfer = () => { setTab('transfer'); setPage('transfer'); resetFlow() }
   const navigate = (t: string) => {
@@ -70,7 +81,7 @@ export default function App() {
       const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
       const tx: Transaction = {
         id: String(Date.now()),
-        title: `انتقال به ${selectedDest.name}`,
+        title: 'انتقال به سپرده',
         date: nowFa(),
         amount: `${faComma(amount)} ریال`,
         iconKey: 'transfer',
@@ -104,7 +115,7 @@ export default function App() {
   if (page === 'receipt' && selectedDest) {
     return (
       <div className={`flex flex-col h-full bg-white ${showReceipt ? 'slide-in-left' : ''}`}>
-        <TransferReceiptPage dest={selectedDest} amount={amount} sender={senderInfo} onBack={goHome} />
+        <TransferReceiptPage dest={selectedDest} amount={amount} method={method} sender={senderInfo} txDate="" onBack={goHome} />
       </div>
     )
   }
@@ -112,7 +123,7 @@ export default function App() {
   if (page === 'viewReceipt' && viewTx?.receipt) {
     return (
       <div className="flex flex-col h-full bg-white slide-in-left">
-        <TransferReceiptPage dest={viewTx.receipt.dest} amount={viewTx.receipt.amount} sender={senderInfo} onBack={goHome} />
+        <TransferReceiptPage dest={viewTx.receipt.dest} amount={viewTx.receipt.amount} method="" sender={senderInfo} txDate={viewTx.date} onBack={goHome} />
       </div>
     )
   }
@@ -128,7 +139,7 @@ export default function App() {
   if (page === 'method') {
     return (
       <div className="flex flex-col h-full bg-white slide-in-left">
-        <TransferMethodPage onBack={() => setPage('amount')} onConfirm={() => setPage('confirm')} />
+        <TransferMethodPage dest={selectedDest!} onBack={() => setPage('amount')} onConfirm={(m) => { setMethod(m); setPage('confirm') }} />
       </div>
     )
   }
@@ -184,7 +195,7 @@ export default function App() {
         </>
       ) : (
         <div className="flex-1 overflow-hidden">
-          <TransferPage onSelect={d => { setSelectedDest(d); setPage('amount') }} />
+          <TransferPage dests={dests} onDestsChange={setDests} onSelect={d => { setSelectedDest(d); setPage('amount') }} />
         </div>
       )}
 

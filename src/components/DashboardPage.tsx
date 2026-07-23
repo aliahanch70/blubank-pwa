@@ -71,8 +71,8 @@ export default function DashboardPage({ transactions, onTxClick, balance }: Prop
              </div>
 
         {/* بخش نمایش موجودی */}
-        <div className="mt-6 mb-6 text-center">
-          <div className="text-[32px] font-bold leading-none mb-3 transition-all duration-200">
+        <div className="mt-4 mb-6 text-center">
+          <div className="text-[28px] font-bold leading-none mb-3 transition-all duration-200">
             {showBalance ? ((balance ?? '۳۱,۲۲۱,۳۹۸') + ' ریال') : '• • • • •'}
           </div>
           <div className="flex items-center justify-center gap-2 text-[16px] opacity-80">
@@ -87,23 +87,23 @@ export default function DashboardPage({ transactions, onTxClick, balance }: Prop
         </div>
 
         {/* دکمه‌های دسترسی سریع پایین هدر */}
-        <div className="flex justify-around items-start text-center px-4 pb-8">
+        <div className="flex justify-around items-start text-center px-4 pb-4">
           <div className="flex flex-col items-center cursor-pointer group">
-            <div className="w-[75px] h-[75px] rounded-full flex items-center justify-center mb-2 bg-white text-[#1D6BDD] transition-transform group-hover:scale-105">
+            <div className="w-[65px] h-[65px] rounded-full flex items-center justify-center mb-2 bg-white text-[#1D6BDD] transition-transform group-hover:scale-105">
               <IconPlusFilled size={24} />
             </div>
             <span className="text-[16px] font-medium opacity-90">شارژ حساب</span>
           </div>
 
           <div className="flex flex-col items-center cursor-pointer group">
-            <div className="w-[75px] h-[75px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
+            <div className="w-[65px] h-[65px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
               <IconPulse size={28} />
             </div>
             <span className="text-[16px] font-medium opacity-90">باکس</span>
           </div>
 
           <div className="flex flex-col items-center cursor-pointer group">
-            <div className="w-[75px] h-[75px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
+            <div className="w-[65px] h-[65px] rounded-full flex items-center justify-center mb-2 bg-white/15 text-white transition-transform group-hover:scale-105">
               <IconReport size={28} />
             </div>
             <span className="text-[16px] font-medium opacity-90">گزارش مالی</span>
@@ -124,15 +124,15 @@ export default function DashboardPage({ transactions, onTxClick, balance }: Prop
           {isLoading ? (
             /* ================= اسکلتون لودینگ فقط برای بخش لیست تراکنش‌ها ================= */
             <div className="animate-pulse flex flex-col gap-1">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="flex items-center justify-between py-[16px] ">
+              {[1, 2, 3, 4, 5 ,6].map((i) => (
+                <div key={i} className="flex items-center justify-between py-3 ">
                   <div className="flex items-center gap-[15px] flex-grow">
                     {/* دایره آیکون فرضی */}
-                    <div className="w-[46px] h-[46px] rounded-full bg-[#c0c0c0] shrink-0" />
+                    <div className="w-[46px] h-[46px] rounded-full bg-[#e0e0e0] shrink-0" />
                     {/* خطوط متن فرضی */}
                     <div className="flex flex-col items-start gap-2">
-                      <div className="w-28 h-4 rounded bg-[#c0c0c0]" />
-                      <div className="w-16 h-3 rounded bg-[#c0c0c0]" />
+                      <div className="w-28 h-4 rounded bg-[#e0e0e0]" />
+                      <div className="w-16 h-3 rounded bg-[#e0e0e0]" />
                     </div>
                   </div>
                   {/* باکس مبلغ فرضی */}
@@ -149,14 +149,14 @@ export default function DashboardPage({ transactions, onTxClick, balance }: Prop
               return (
                 <div
                   key={tx.id}
-                  className={`flex items-center justify-between py-[16px] ${tx.receipt ? 'cursor-pointer' : ''}`}
+                  className={`flex items-center justify-between py-[12px] ${tx.receipt ? 'cursor-pointer' : ''}`}
                   onClick={() => tx.receipt && onTxClick?.(tx)}
                 >
                   {/* بخش راست: آیکون و جزئیات */}
-                  <div className="flex items-center gap-[15px] flex-grow">
+                  <div className="flex items-center gap-[16px] flex-grow">
                     {/* دایره آیکون */}
                     <div 
-                      className={`flex-shrink-0 w-[46px] h-[46px] rounded-full flex items-center justify-center transition-colors ${
+                      className={`flex-shrink-0 w-[50px] h-[50px] rounded-full flex items-center justify-center transition-colors ${
                         isDeposit 
                           ? 'bg-[#E6F6F2] text-[#00A884]' 
                           : 'bg-[#F1F3F7] text-[#879FB1]'
@@ -167,7 +167,7 @@ export default function DashboardPage({ transactions, onTxClick, balance }: Prop
 
                     {/* متون تراکنش */}
                     <div className="flex flex-col items-start text-right">
-                      <div className="text-[16px] font-medium text-[#2B3441] mb-0.5">
+                      <div className="text-[16px] font-[400] text-[#2B3441] mb-0.5">
                         {tx.title}
                       </div>
                       <div className="text-[14px] text-[#8798a5] font-normal">
@@ -178,7 +178,7 @@ export default function DashboardPage({ transactions, onTxClick, balance }: Prop
 
                   {/* بخش چپ: مبلغ */}
                   <div 
-                    className={`text-[16px]  whitespace-nowrap flex-shrink-0 direction-ltr transition-colors ${
+                    className={`text-[16px]  whitespace-nowrap flex-shrink-0  transition-colors ${
                       isDeposit ? 'bg-[#c8ede9]' : 'text-[#2B3441]'
                     }`}
                   >

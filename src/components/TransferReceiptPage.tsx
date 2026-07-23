@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { IconBack, IconHelp, IconShare, IconDownload } from './Icons'
+import { IranianBank } from 'iranian-bank-logo-react'
+import { detectBankFromCard } from '../services/bankDetector'
 
 const avatar = 'SC.webp'
+const avatar2 = '/D2.webp'
 const blue = 'Hb.webp'
 const fa = (s: string) => s.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d])
 
@@ -23,16 +26,29 @@ function toPersianDate(d: Date) {
   return `${p} ${weekdays[d.getDay()]}، ${get('day')} ${months[mi]} ${get('year')}`
 }
 
+// Rearrange stored date 'جمعه ۲۶ تیر ۱۴۰۵ ۱۳:۴۵' → '۱۳:۴۵ جمعه، ۲۶ تیر ۱۴۰۵'
+function formatDate(s: string) {
+  if (!s) return s
+  const time = s.slice(-5)
+  const rest = s.slice(0, -5).trim()
+  const spaceIdx = rest.indexOf(' ')
+  const dayName = rest.slice(0, spaceIdx)
+  const dayMonthYear = rest.slice(spaceIdx + 1)
+  return `${time} ${dayName}، ${dayMonthYear}`
+}
+
 interface Props {
   dest: { name: string; account: string; badge: boolean; blue: boolean }
   amount: string
   sender: { name: string; sheba: string }
+  method?: string
+  txDate?: string
   onBack: () => void
 }
 
-export default function TransferReceiptPage({ dest, amount, sender, onBack }: Props) {
+export default function TransferReceiptPage({ dest, amount, sender, method, txDate, onBack }: Props) {
   const [date, setDate] = useState('')
-  useEffect(() => setDate(toPersianDate(new Date())), [])
+  useEffect(() => setDate(txDate ? formatDate(txDate) : toPersianDate(new Date())), [])
 
   const docNum = fa(String(Date.now()).slice(-10))
 
@@ -50,11 +66,25 @@ export default function TransferReceiptPage({ dest, amount, sender, onBack }: Pr
       <section className="flex flex-col items-center text-center mb-3 shrink-0">
         <div className="relative mb-2">
           <div className="w-[70px] h-[70px] rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#B2D6FF] flex items-center justify-center overflow-hidden">
-            <img src={avatar} alt="" className="w-full h-full object-cover" />
+            {dest.blue ? (
+              <img src={avatar} alt="" className="w-full h-full object-cover" />
+            ) : (() => {
+              const bank = detectBankFromCard(dest.account)
+              return bank ? (
+                <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                  <img src={avatar2} alt="" className="w-full h-full object-cover rounded-full" />
+                  <div className="absolute bottom-0.5 left-0.5 w-[28px] h-[28px] rounded-full overflow-hidden border-2 border-white bg-white">
+                    <IranianBank name={bank.iconKey?? null} size={24} className="w-full h-full object-cover" />
+                  </div>
+                </div>
+              ) : (
+                <img src={avatar2} alt="" className="w-full h-full object-cover rounded-full" />
+              )
+            })()}
           </div>
           {dest.badge && (
-            <div className="absolute bottom-0.5 left-0.5 w-[28px] h-[28px] rounded-full flex items-center justify-center text-white text-[11px] font-medium">
-              <img src={blue} alt="" className="w-full h-full object-cover" />
+            <div className="absolute bottom-0.5 left-0.5 w-[28px] h-[28px] rounded-full overflow-hidden ">
+              <img src="/Hb.webp" alt="" className="w-full h-full object-cover" />
             </div>
           )}
         </div>
@@ -87,7 +117,7 @@ export default function TransferReceiptPage({ dest, amount, sender, onBack }: Pr
           {[
             ['زمان', date],
             ['انتقال دهنده', sender.name],
-            ['روش انتقال', 'بلو به بلو'],
+            ['روش انتقال', method || 'بلو به بلو'],
             ['سپرده مبدا', sender.sheba],
             ['شماره سند', docNum],
           ].map(([label, value], i) => (
@@ -100,10 +130,10 @@ export default function TransferReceiptPage({ dest, amount, sender, onBack }: Pr
 
         {/* لوگو بلوبانک */}
         <div className="flex flex-col items-center mt-1 mb-auto py-2">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center">
             <div className="flex flex-col items-start">
-              <span style={{ fontFamily: 'centurygothic'}} className=" text-[1.5rem] font-[700] text-[#707c91] leading-tight">Transfer</span>
-              <span style={{ fontFamily: 'centurygothic'}}className="text-[0.80rem] text-[#879FB1]  text-left">blubank.com</span>
+              <span style={{ fontFamily: 'centurygothic' }} className="text-[1.5rem] font-[700] text-[#707c91] leading-tight">Transfer</span>
+              <span style={{ fontFamily: 'centurygothic' }} className="text-[0.80rem] text-[#879FB1] pl-2">blubank.com</span>
             </div>
             <img src="/blo-icon.png" alt="" className="w-10" />
           </div>

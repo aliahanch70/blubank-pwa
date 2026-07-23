@@ -1,6 +1,9 @@
 import { IconBack, IconHelp, IconDropdown } from './Icons'
+import { IranianBank } from 'iranian-bank-logo-react'
+import { detectBankFromCard } from '../services/bankDetector'
 
 const avatar = '/SC.webp'
+const avatar2 = '/D2.webp'
 const blue = 'Hb.webp'
 const fa = (s: string) => s.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d])
 const faComma = (s: string) => fa(s.replace(/\B(?=(\d{3})+(?!\d))/g, ','))
@@ -30,10 +33,24 @@ export default function TransferConfirmPage({ dest, amount, onBack, onConfirm }:
       <section className="flex flex-col items-center text-center mb-[25px]">
         <div className="relative mb-3">
           <div className="w-[85px] h-[85px] rounded-full bg-gradient-to-br from-[#E1EEFF] to-[#B2D6FF] flex items-center justify-center overflow-hidden">
-            <img src={avatar} alt="" className="w-full h-full object-cover" />
+            {dest.blue ? (
+              <img src={avatar} alt="" className="w-full h-full object-cover" />
+            ) : (() => {
+              const bank = detectBankFromCard(dest.account)
+              return bank ? (
+                <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                  <img src={avatar2} alt="" className="w-full h-full object-cover rounded-full" />
+                  <div className="absolute bottom-0.5 left-0.5 w-[24px] h-[24px] rounded-full overflow-hidden border-2 border-white bg-white">
+                    <IranianBank name={bank.iconKey?? null} size={24} className="w-full h-full object-cover" />
+                  </div>
+                </div>
+              ) : (
+                <img src={avatar2} alt="" className="w-full h-full object-cover rounded-full" />
+              )
+            })()}
           </div>
           {dest.badge && (
-            <div className="absolute bottom-0.5 right-0.5 w-[24px] h-[24px] rounded-full overflow-hidden border-2 border-white">
+            <div className="absolute bottom-0.5 left-0.5 w-[30px] h-[30px] rounded-full overflow-hidden">
               <img src="/Hb.webp" alt="" className="w-full h-full object-cover" />
             </div>
           )}
